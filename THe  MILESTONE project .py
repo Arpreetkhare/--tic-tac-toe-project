@@ -1,140 +1,72 @@
+def sum(a,b,c):
+    return a+b+c
+
+def printboard(xpos,ypos):
+
+    zero= 'x'if xpos[0] else ('o' if ypos[0] else 0)
+    one= 'x'if xpos[1] else ('o' if ypos[1] else 1)
+    two= 'x'if xpos[2] else ('o' if ypos[2] else 2)
+    three='x'if xpos[3] else ('o' if ypos[3] else 3)
+    four= 'x'if xpos[4] else ('o' if ypos[4] else 4)
+    five= 'x'if xpos[5] else ('o' if ypos[5] else 5)
+    six= 'x'if xpos[6] else( 'o' if ypos[6] else 6)
+    seven= 'x'if xpos[7] else ('o' if ypos[7] else 7)
+    eight= 'x'if xpos[8] else ('o' if ypos[8] else 8)
 
 
-def display_board(board):
-    print(board[7]+'|'+board[8]+'|'+board[9])
-    print(board[4]+'|'+board[5]+'|'+board[6])
-    print(board[1]+'|'+board[2]+'|'+board[3])
-    
-test_board = ['#','X','O','X','O','X','O','X','O','X']
-print(display_board(test_board)) 
+    print(f' {zero} | {one} | {two} ')
+    print(f"------------")
+    print(f' {three} | {four} | {five} ')
+    print(f"------------")
+    print(f' {six} | {seven} | {eight} ')
 
-def player_input():
-    choice='word'
-    while choice not in ['X','O']:
-        if choice not in ['X','O']:
-            choice=input('pick a sign between (X,O):')
-    
 
-    player1=choice
-    if player1=='X':
-        player2='O'
-    else:
-         player2='X'
 
-    return(player1,player2)
+def cheakwin(xpos,ypos):
+    win= [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
+    for i in win :
+        if (sum(xpos[i[0]],xpos[i[1]],xpos[i[2]])==3):
+            
+            print("'x' won")
+            return 1
         
-print(player_input()) 
+            
+        
+        elif (sum(ypos[i[0]],ypos[i[1]],ypos[i[2]])==3):
+                print("'o' won")
+                return 0
+                
+                
+        
+    return -1 
+            
+            
+        
+            
+xpos=[0,0,0,0,0,0,0,0,0]
+ypos=[0,0,0,0,0,0,0,0,0]
+turn =1
+print('welcome to tic tac toe')
+while(True):
+    printboard(xpos,ypos)
+    if turn ==1:
+        print("X's chance")
+        value=int(input("enter a value"))
+        xpos[value]=1
 
-def place_marker(board, marker, position):
-    board[position]=marker
-test_board=['#','X','O','X','O','X','O','X','O','X']
-
-print(place_marker(test_board,'@',8) ) 
-display_board(test_board) 
-
-
-def win_check(board, mark):
-    return (board[1]==board[2]==board[3]==mark) or ( board[4]==board[5]==board[6]==mark) or(board[7]==board[8]==board[9]==mark) or(board[1]==board[4]==board[7]==mark)or( board[2]==board[5]==board[8]==mark)or(board[3]==board[6]==board[9]==mark)or( board[1]==board[5]==board[9]==mark)or(board[3]==board[5]==board[7]==mark)
-
-    
-    
-print(win_check(test_board,'X')) 
-display_board(test_board)  
-
-
-import random
-
-def chosose_first():
-    flip= random.randint(0,1)
-    if flip == 0:
-        return'player1'
     else:
-        return 'player2'
-   
-def space_check(board,position):
-    return board[position]==''
-
-def board_full(board):
-    for i in range(1,10):
-        if space_check(board,i):
-            return False
-    return True
-
-
-def player_choice(board):
-    position=0
+        print("o's turn")
+        value=int(input("enter a value"))
+        ypos[value]=1
+        
+    cheaking=cheakwin(xpos,ypos)
+    if cheaking!= -1:
+        print("match over")
+        break
     
-    while position not in [1,2,3,4,5,6,7,8,9] or not space_check(board,position):
-        position=int(input('choce a position betweenw 1 to 9:'))
-        return(position)
-    return board
-print(player_choice([1,2,3,4,5,6,7,8,9])
-)
 
-
-def replay():
-
-    return input('do you wanna play again, Enter (YES or NO)').lower().startswith('y')
-
-print(replay())   
-
-def gameon():
-    print('welcome to tic,toc,toe')
-
-    while  True:
-      theboard=[]*10
-      
-
-      player1_marker , player2_marker= player_input()
-
-      turn=chosose_first()
-
-      print(turn+'will go first')
-
-      player_game= input('wanna play Y,N')
-      if player_game=='Y':
-        gameon=True
-      else:
-        gameon=False 
-
-      while gameon: 
-        if turn=='player1':
-            display_board(theboard)  
-            position=player_choice(theboard)  
-            place_marker(theboard,player1_marker,position)  
-            if win_check(theboard,player1_marker):
-                display_board(theboard)
-                print('player1 has won')
-                gameon=False
-            else:
-                if board_full(theboard):
-                    display_board(theboard)
-                    print('tie!')
-                    gameon=False
-                else:
-                    turn='player2'
-        else:
-            turn=='player2'
-            display_board(theboard)  
-            position=player_choice(theboard)  
-            place_marker(theboard,player2_marker,position)  
-            if win_check(theboard,player2_marker):
-                display_board(theboard)
-                print('player2 has won')
-                gameon=False
-            else:
-                if board_full(theboard):
-                    display_board(theboard)
-                    print('tie!')
-                    gameon=False
-                else:
-                    turn='player1'
-      if not replay():
-        return False  
-print(gameon('theboard'))      
-                          
-
-
+    turn = 1-turn     
+       
 
 
 
